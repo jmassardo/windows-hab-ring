@@ -92,13 +92,13 @@ resource "azurerm_virtual_machine" "winnode3" {
   }
 
   provisioner "file" {
-    source      = "files/config.ps1"
-    destination = "c:/terraform/config.ps1"
+    source      = "files/Install-Habitat.ps1"
+    destination = "c:/terraform/Install-Habitat.ps1"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "PowerShell.exe -ExecutionPolicy Bypass c:/terraform/config.ps1",
+      "PowerShell.exe -ExecutionPolicy Bypass c:/terraform/Install-Habitat.ps1",
     ]
   }
 
@@ -108,13 +108,13 @@ resource "azurerm_virtual_machine" "winnode3" {
   }
 
   provisioner "file" {
-    source      = "files/hab_it.ps1"
-    destination = "c:/terraform/hab_it.ps1"
+    source      = "files/Start-Habitat.ps1"
+    destination = "c:/terraform/Start-Habitat.ps1"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "PowerShell.exe -ExecutionPolicy Bypass c:/terraform/hab_it.ps1",
+      "PowerShell.exe -ExecutionPolicy Bypass c:/terraform/Start-Habitat.ps1",
     ]
   }
 }

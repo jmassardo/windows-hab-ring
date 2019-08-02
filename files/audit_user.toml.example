@@ -1,0 +1,8 @@
+[chef_license]
+acceptance = "accept-no-persist"
+
+[automate]
+enable = true
+server_url = "https://example.com/data-collector/v0/"
+token = "MySuperSecretToken"
+user = 'admin'

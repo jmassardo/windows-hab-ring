@@ -3,3 +3,4 @@ hab license accept
 hab pkg install core/windows-service
 hab pkg exec core/windows-service install
 netsh advfirewall firewall add rule name="Habitat Butterfly API" dir=in action=allow protocol=TCP localport=9631
+Start-Service -Name Habitat

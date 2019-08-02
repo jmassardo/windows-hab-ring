@@ -4,3 +4,5 @@ terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
 AzureCredentials.tf
+audit_user.toml
+infra_user.toml

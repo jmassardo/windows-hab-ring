@@ -3,19 +3,20 @@ resource "azurerm_public_ip" "winnode2_pubip" {
   name                         = "winnode2_pubip"
   location                     = "${var.azure_region}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
-  public_ip_address_allocation = "dynamic"
+  allocation_method            = "Dynamic"
   domain_name_label            = "winnode2-${lower(substr("${join("", split(":", timestamp()))}", 8, -1))}"
 
-  tags {
+  tags = {
     environment = "${var.azure_env}"
   }
 }
 
 #create the network interface and put it on the proper vlan/subnet
 resource "azurerm_network_interface" "winnode2_ip" {
-  name                = "winnode2_ip"
-  location            = "${var.azure_region}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  name                      = "winnode2_ip"
+  location                  = "${var.azure_region}"
+  resource_group_name       = "${azurerm_resource_group.rg.name}"
+  network_security_group_id = "${azurerm_network_security_group.nsg.id}"
 
   ip_configuration {
     name                          = "winnode2_ipconf"
@@ -55,13 +56,13 @@ resource "azurerm_virtual_machine" "winnode2" {
     custom_data    = "${file("./files/winrm.ps1")}"
   }
 
-  tags {
+  tags = {
     environment = "${var.azure_env}"
   }
 
   os_profile_windows_config {
     provision_vm_agent = true
-    winrm = {
+    winrm {
       protocol = "http"
     }
     # Auto-Login's required to configure WinRM

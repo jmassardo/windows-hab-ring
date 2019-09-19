@@ -3,19 +3,20 @@ resource "azurerm_public_ip" "winnode3_pubip" {
   name                         = "winnode3_pubip"
   location                     = "${var.azure_region}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
-  public_ip_address_allocation = "dynamic"
+  allocation_method            = "Dynamic"
   domain_name_label            = "winnode3-${lower(substr("${join("", split(":", timestamp()))}", 8, -1))}"
 
-  tags {
+  tags = {
     environment = "${var.azure_env}"
   }
 }
 
 #create the network interface and put it on the proper vlan/subnet
 resource "azurerm_network_interface" "winnode3_ip" {
-  name                = "winnode3_ip"
-  location            = "${var.azure_region}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  name                      = "winnode3_ip"
+  location                  = "${var.azure_region}"
+  resource_group_name       = "${azurerm_resource_group.rg.name}"
+  network_security_group_id = "${azurerm_network_security_group.nsg.id}"
 
   ip_configuration {
     name                          = "winnode3_ipconf"
@@ -55,13 +56,13 @@ resource "azurerm_virtual_machine" "winnode3" {
     custom_data    = "${file("./files/winrm.ps1")}"
   }
 
-  tags {
+  tags = {
     environment = "${var.azure_env}"
   }
 
   os_profile_windows_config {
     provision_vm_agent = true
-    winrm = {
+    winrm {
       protocol = "http"
     }
     # Auto-Login's required to configure WinRM
@@ -105,6 +106,16 @@ resource "azurerm_virtual_machine" "winnode3" {
   provisioner "file" {
     source      = "files/HabService.dll.3.config"
     destination = "C:/hab/svc/windows-service/HabService.dll.config"
+  }
+
+  provisioner "file" {
+    source      = "files/audit_user.toml"
+    destination = "C:/hab/user/effortless-audit/config/user.toml"
+  }
+
+  provisioner "file" {
+    source      = "files/infra_user.toml"
+    destination = "C:/hab/user/effortless-infra/config/user.toml"
   }
 
   provisioner "file" {

@@ -3,10 +3,10 @@ resource "azurerm_public_ip" "workstation_pubip" {
   name                         = "workstation_pubip"
   location                     = "${var.azure_region}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
-  public_ip_address_allocation = "dynamic"
+  allocation_method = "Dynamic"
   domain_name_label            = "workstation-${lower(substr("${join("", split(":", timestamp()))}", 8, -1))}"
 
-  tags {
+  tags = {
     environment = "${var.azure_env}"
   }
 }
@@ -55,13 +55,13 @@ resource "azurerm_virtual_machine" "workstation" {
     custom_data    = "${file("./files/winrm.ps1")}"
   }
 
-  tags {
+  tags = {
     environment = "${var.azure_env}"
   }
 
   os_profile_windows_config {
     provision_vm_agent = true
-    winrm = {
+    winrm {
       protocol = "http"
     }
     # Auto-Login's required to configure WinRM

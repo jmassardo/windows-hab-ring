@@ -94,7 +94,7 @@ resource "azurerm_network_security_group" "nsg" {
   }
 
   # add an environment tag.
-  tags {
+  tags = {
     environment = "${var.azure_env}"
   }
 }

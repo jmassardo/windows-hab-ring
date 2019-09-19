@@ -6,3 +6,4 @@ terraform.tfvars
 AzureCredentials.tf
 audit_user.toml
 infra_user.toml
+.DS_Store

@@ -110,22 +110,19 @@ resource "azurerm_virtual_machine" "winnode3" {
 
   provisioner "file" {
     source      = "files/audit_user.toml"
-    destination = "C:/hab/user/effortless-audit/config/user.toml"
+    destination = "C:/hab/user/${var.audit_pkg_name}/config/user.toml"
   }
 
   provisioner "file" {
     source      = "files/infra_user.toml"
-    destination = "C:/hab/user/effortless-infra/config/user.toml"
-  }
-
-  provisioner "file" {
-    source      = "files/Start-Habitat.ps1"
-    destination = "c:/terraform/Start-Habitat.ps1"
+    destination = "C:/hab/user/${var.infra_pkg_name}/config/user.toml"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "PowerShell.exe -ExecutionPolicy Bypass c:/terraform/Start-Habitat.ps1",
+      "sc start habitat",
+      "hab svc load ${var.hab_origin}/${var.audit_pkg_name} --channel prod --strategy at-once",
+      "hab svc load ${var.hab_origin}/${var.infra_pkg_name} --channel prod --strategy at-once",
     ]
   }
 }

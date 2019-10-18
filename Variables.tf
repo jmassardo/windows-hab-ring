@@ -35,3 +35,15 @@ variable "source_address_prefix" {
   default = "*"
   description = "Specify source prefix i.e. 1.2.3.4/24. This restricts the network security group so only your systems can remotely access the resources. Prevents resources from being exposed directly to the Internet."
 }
+
+variable "hab_origin" {
+  description = "Specify the package origin name"
+}
+
+variable "audit_pkg_name" {
+  description = "Specify the name of your effortless audit package"
+}
+
+variable "infra_pkg_name" {
+  description = "Specify the name of your effortless infra package"
+}

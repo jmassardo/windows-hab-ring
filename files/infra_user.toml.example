@@ -1,3 +1,6 @@
+[chef_license]
+acceptance = "unknown"
+
 [automate]
 enable = "true"
 server_url = "https://example.com/data-collector/v0/"

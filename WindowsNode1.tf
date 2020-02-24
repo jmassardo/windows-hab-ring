@@ -120,7 +120,7 @@ resource "azurerm_virtual_machine" "winnode1" {
 
   provisioner "remote-exec" {
     inline = [
-      "sc start habitat",
+      "PowerShell.exe -Command \"Start-Service -Name Habitat\"",
       "hab svc load ${var.hab_origin}/${var.audit_pkg_name} --channel dev --strategy at-once",
       "hab svc load ${var.hab_origin}/${var.infra_pkg_name} --channel dev --strategy at-once",
     ]

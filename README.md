@@ -26,4 +26,14 @@ infra_pkg_name = "effortless-infra"
 
 Next, you'll need to edit the `files\audit_user.toml` and `files\infra_user.toml` and specify the URL and token for your Automate instance. There are examples of these files as well.
 
+Then, edit the `HabService.dll.{1...3}.config` files and specify the following settings on line 7:
+
+``` bash
+--event-stream-application effortless        # Name of your application
+--event-stream-environment dev               # Environment name: dev, stg, prod, etc.
+--event-stream-site uscentral                # Physical site or cloud region
+--event-stream-url automate.example.com:4222 # Automate URL
+--event-stream-token 123457890ABCDEFG=       # Automate Token
+```
+
 Then run `terraform apply`
